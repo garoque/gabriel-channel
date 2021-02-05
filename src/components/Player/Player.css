@@ -12,7 +12,7 @@
 }
 
 .ContentVideo {
-    background-color: #6B38FB;
+    background-color: #33ab9f;
     padding-right: 35px;
     padding-left: 35px;
     padding-bottom: 10px;
@@ -24,6 +24,23 @@
     justify-content: space-between;
     width: 100%;
     padding-bottom: 16px;
+}
+
+.ControlsLeft {
+    display: flex;
+}
+
+.ControlsRight {
+    display: flex;
+}
+
+.ButtonExpand {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    margin-left: 8px;
+    padding-right: 3px;
 }
 
 .ButtonPlayPause {
@@ -40,4 +57,16 @@
 
 .InputRange {
     width: 100%;
+}
+
+.SelectSpeed {
+    border: none;
+    margin-right: 3px;
+    background-color: #000;
+    color: #33ab9f;
+    font-weight: 600;
+    width: 35px;
+    border-radius: 6px;
+    padding: 3px;
+    outline: none;
 }
