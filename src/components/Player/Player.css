@@ -17,6 +17,14 @@
     padding-left: 35px;
     padding-bottom: 10px;
     border-radius: 10px;
+    height: 480px;
+    width: 640px;
+}
+
+.Video {
+    height: 100%;
+    width: 100%;
+    padding-top: 35px;
 }
 
 .Controls {
@@ -55,8 +63,9 @@
     margin-bottom: 16px;
 }
 
-.InputRange {
+.InputTimeVideo {
     width: 100%;
+    cursor: pointer;
 }
 
 .SelectSpeed {
@@ -69,4 +78,26 @@
     border-radius: 6px;
     padding: 3px;
     outline: none;
+}
+
+.ButtonVolume {
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    padding-left: 10px;
+}
+
+.ButtonVolume {
+    padding-right: 10px;
+}
+
+.InputVolume {
+    display: none;
+    cursor: pointer;
+    width: 100px;
+}
+
+.ButtonVolume:hover + .InputVolume, .InputVolume:hover {
+    display: inline-block;
 }

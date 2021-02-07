@@ -1,13 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './Player.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlayCircle, faPauseCircle, faExpand } from '@fortawesome/free-solid-svg-icons';
+import { faPlayCircle, faPauseCircle, faExpand, faVolumeUp, faVolumeMute, faVolumeDown } from '@fortawesome/free-solid-svg-icons';
 
 function usePlayerState(videoPlayer) {
     const [playerState, setPlayerState] = useState({
         playing: false,
         percentage: 0,
         volume: 0.5,
+        muted: false,
     });
 
     useEffect(() => {
@@ -57,6 +58,17 @@ function usePlayerState(videoPlayer) {
         videoPlayer.current.requestFullscreen();
     }
 
+    function toggleVideoMute() {
+        videoPlayer.current.muted = playerState.muted ? false : true;
+        const setVolumeBar = playerState.muted ? videoPlayer.current.volume : 0;
+
+        setPlayerState({
+            ...playerState,
+            muted: videoPlayer.current.muted,
+            volume: setVolumeBar,
+        })
+    }
+
     return {
         playerState,
         toggleVideoPlay,
@@ -65,6 +77,7 @@ function usePlayerState(videoPlayer) {
         handleChangeSpeed,
         handleChangeVideoVolume,
         toggleVideoExpand,
+        toggleVideoMute,
     }
 }
 
@@ -73,6 +86,9 @@ const videoURL = "http://commondatastorage.googleapis.com/gtv-videos-bucket/samp
 export default function Player() {
     const buttonPlay = <FontAwesomeIcon size="2x" color="#000" icon={faPlayCircle} />;
     const buttonPause = <FontAwesomeIcon size="2x" color="#000" icon={faPauseCircle} />;
+    const buttonVolumeUp = <FontAwesomeIcon size="2x" color="#000" icon={faVolumeUp} />;
+    const buttonVolumeMute = <FontAwesomeIcon size="2x" color="#000" icon={faVolumeMute} />;
+    const buttonVolumeDown = <FontAwesomeIcon size="2x" color="#000" icon={faVolumeDown} />;
     const videoPlayer = useRef(null);
     const {
         playerState,
@@ -82,18 +98,22 @@ export default function Player() {
         handleChangeSpeed,
         handleChangeVideoVolume,
         toggleVideoExpand,
+        toggleVideoMute,
     } = usePlayerState(videoPlayer);
 
     return (
         <div className="MainContainer">
             <div className="ContentVideo">
-                <video width="640" height="480" onClick={toggleVideoPlay}
-                    src={videoURL} ref={videoPlayer}
-                    poster="https://www.jornaldafronteira.com.br/wp-content/uploads/2020/03/galaxia.jpg"
-                    onTimeUpdate={handleTimeUpdate}
-                />
+                <div className="ContainerVideo">
+                    <video className="Video" onClick={toggleVideoPlay}
+                        src={videoURL} ref={videoPlayer}
+                        poster="https://www.jornaldafronteira.com.br/wp-content/uploads/2020/03/galaxia.jpg"
+                        onTimeUpdate={handleTimeUpdate}
+                    />
+                </div>
+
                 <div className="ContainerInputRange">
-                    <input className="InputRange" type="range" min="0" max="100" step="0.01"
+                    <input className="InputTimeVideo" type="range" min="0" max="100" step="0.01"
                         value={playerState.percentage} onChange={handleChangeVideoPercentage}
                     />
                 </div>
@@ -104,14 +124,18 @@ export default function Player() {
                             {playerState.playing ? buttonPause : buttonPlay}
                         </button>
 
-                        <input className="InputRange" type="range" min="0" max="1" step="0.01"
+                        <button className="ButtonVolume" onClick={toggleVideoMute}>
+                            {playerState.muted ? buttonVolumeMute : (playerState.volume > 0.5 ? buttonVolumeUp : buttonVolumeDown)}
+                        </button>
+
+                        <input className="InputVolume" type="range" min="0" max="1" step="0.01"
                             value={playerState.volume} onChange={handleChangeVideoVolume}
                         />
                     </div>
 
                     <div className="ControlsRight">
                         <select className="SelectSpeed" onChange={handleChangeSpeed}>
-                            {[1, 2, 3, 4, 5].map(speed => (
+                            {[1, 2, 3, 4].map(speed => (
                                 <option key={`speedChange_${speed}`}>
                                     {speed}
                                 </option>
